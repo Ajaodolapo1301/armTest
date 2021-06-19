@@ -29,7 +29,7 @@ Future<void> main() async {
   // final box = Hive.box("user");
   // User user = box.get('user', defaultValue: null);
   runApp(DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => MultiProvider(providers: [
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => NewsState()),
@@ -43,46 +43,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     setStatusBarColor(color: BarColor.black);
-    return FutureBuilder(
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot){
-        if (snapshot.hasError) {
-          return Container();
-        }      // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              return OrientationBuilder(
-                builder: (context, orientation) {
-                  SizeConfig().init(constraints, orientation);
-                  return GestureDetector(
-                    onTap: () {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            SizeConfig().init(constraints, orientation);
+            return GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
 
-                      if (!currentFocus.hasPrimaryFocus &&
-                          currentFocus.focusedChild != null) {
-                        currentFocus.focusedChild.unfocus();
-                      }
-                    },
-                    child: MaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        title: 'ARM',
-                        theme: ThemeData(
-                            primarySwatch: Colors.deepPurple,
-                            fontFamily: 'BasisGrotesquePro'
-                          // primarySwatch: Colors.blue,
-                        ),
-                        home:
-                        // DashboardPage())
+                if (!currentFocus.hasPrimaryFocus &&
+                    currentFocus.focusedChild != null) {
+                  currentFocus.focusedChild.unfocus();
+                }
+              },
+              child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: 'ARM',
+                  theme: ThemeData(
+                      primarySwatch: Colors.deepPurple,
+                      fontFamily: 'BasisGrotesquePro'
+                    // primarySwatch: Colors.blue,
+                  ),
+                  home:
+                  // DashboardPage())
 
-                        Login()),
-                  );
-                },
-              );
-            },
-          );
-        }
-      return Container();
+                  Login()),
+            );
+          },
+        );
       },
     );
   }

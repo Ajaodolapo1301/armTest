@@ -1,7 +1,15 @@
-  import 'package:arm_test/constants/colorConstants.dart';
+  import 'package:arm_test/Services/auth.dart';
+import 'package:arm_test/constants/colorConstants.dart';
 import 'package:arm_test/screens/Dashboard/homeList.dart';
 import 'package:arm_test/screens/Dashboard/newsPage.dart';
+import 'package:arm_test/screens/auth/login.dart';
+import 'package:arm_test/sizeConfig/commonUtils.dart';
+import 'package:arm_test/sizeConfig/navigation/navigator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'add.dart';
 
 
 
@@ -19,11 +27,27 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   TabController _tabController;
 
+  final auth = FirebaseAuth.instance;
+  FirebaseUser loggedInUser;
+
+
+
+
+  getCurrent()async{
+    final user = await auth.currentUser();
+    if(user != null){
+    loggedInUser = user;
+    }
+    print(loggedInUser.email);
+  }
+
+
+
   int _currentTabIndex = 0;
   String initialAppBarTitle = 'Personal Messages';
   List<String> appBarTitles = [
     'Personal Messages',
-    'Social Messages',
+    'News',
 
   ];
 
@@ -66,47 +90,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     _tabController.addListener(_onTabChanged);
 
     _currentTabIndex = 0;
-
+    getCurrent();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      // backgroundColor: Colors.blue,
       appBar: AppBar(
+        actions: [
+          IconButton(icon: Icon(Icons.logout), onPressed: (){
+          CommonUtils.showAlertDialogLog(context);
+
+          })
+        ],
           title: Text(initialAppBarTitle),
           centerTitle: true,
-          actions: <Widget>[
-            // PopupMenuButton<String>(
-            //   onSelected: handleMenuItemClick,
-            //   itemBuilder: (BuildContext context) {
-            //     return isAndroid ? {'Introduction', 'Tips', 'About Developer', 'Sign Out'}
-            //         .map((String choice) {
-            //       return PopupMenuItem<String>(
-            //         value: choice,
-            //         child: Text(
-            //           choice,
-            //           style: TextStyle(color: Colors.black),
-            //         ),
-            //       );
-            //     }).toList() : {'Introduction', 'About Developer', 'Sign Out'}
-            //         .map((String choice) {
-            //       return PopupMenuItem<String>(
-            //         value: choice,
-            //         child: Text(
-            //           choice,
-            //           style: TextStyle(color: Colors.black),
-            //         ),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-          ],
           bottom: TabBar(
+
             tabs: _tabs,
             controller: _tabController,
             indicatorColor: kSurfaceColor,
           )),
       body: TabBarView(
+
         controller: _tabController,
         children: <Widget>[
           HomeList(),
@@ -118,6 +124,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       floatingActionButton: _currentTabIndex == 1 ? SizedBox() : FloatingActionButton(
 
+        onPressed: (){
+          pushTo(context, Add());
+        },
+        // child: Text("+", style: TextStyle(color: Colors.white),),
+        child: Icon(Icons.add),
       ),
     );
   }

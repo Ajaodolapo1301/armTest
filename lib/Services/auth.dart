@@ -2,28 +2,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FireAuth {
-  static Future<User> registerUsingEmailPassword({String firstname, String lastname, String email, String password,}) async {
+  static Future registerUsingEmailPassword({String firstname, String lastname, String email, String password,}) async {
     print("here");
     FirebaseAuth auth = FirebaseAuth.instance;
-    User user;
+    var user;
+
     try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        user   = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      user = userCredential.user;
-      await user.updateProfile(displayName: "$firstname $lastname");
+      // user = userCredential.user;
+      await user.updateProfile();
       await user.reload();
-      user = auth.currentUser;
+      user = auth.currentUser();
 
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
-    } catch (e) {
-      print(e);
     }
     return user;
   }
@@ -31,21 +30,21 @@ class FireAuth {
 
 
 
-  static Future<User> signInUsingEmailPassword({
+  static Future signInUsingEmailPassword({
      String email,
      String password,
      BuildContext context,
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    User user;
+    var user;
 
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+       user = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
+      // user = userCredential.user;
+    } catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
@@ -55,4 +54,10 @@ class FireAuth {
 
     return user;
   }
+
+
+
+
+
+
 }

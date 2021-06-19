@@ -177,7 +177,7 @@ var refcode;
                               text: "SIGN UP".toUpperCase(),
                               onPressed: () async{
                                 if (formKey.currentState.validate()) {
-                                    register(surname, firstname, email, password);
+                                    // register(surname, firstname, email, password);
 
                                       }
 
@@ -202,7 +202,7 @@ var refcode;
 
 
   void register(firstname, lastname, email, password)async{
-    User user = await FireAuth
+    var user = await FireAuth
         .registerUsingEmailPassword(
       firstname: firstname,
       lastname: lastname,

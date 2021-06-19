@@ -3,6 +3,8 @@
 
 
 import 'package:arm_test/constants/colorConstants.dart';
+import 'package:arm_test/screens/auth/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -11,9 +13,9 @@ import 'package:intl/intl.dart';
 
 import 'package:progress_dialog/progress_dialog.dart';
 
-
+Color barrierColor = Color(0xff364A7D).withOpacity(0.85);
 class CommonUtils{
-
+  final auth = FirebaseAuth.instance;
   static formatDate(String date) {
     if (date == null) {
       return date ?? "";
@@ -32,6 +34,114 @@ class CommonUtils{
 
     String fmtTime =DateFormat('kk:mm:a').format(DateTime.parse(date));
     return fmtTime.toString();
+  }
+
+
+
+  static   showAlertDialogLog(BuildContext context,) async{
+    // final SharedPreferences preferences = await SharedPreferences.getInstance();
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel", style: TextStyle(color: kPrimaryColor),),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes", style: TextStyle(color: kPrimaryColor),),
+      onPressed:  () {
+      auth.signOut();
+
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Login()),
+                (Route<dynamic> route) => false);
+
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Logout"),
+      content: Text("Are you sure you want to logout?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  static showAlertDialog({BuildContext context, String text, VoidCallback onClose}) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("OK", style:TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: kPrimaryColor
+      ),),
+      onPressed: onClose,
+    );
+
+//  // set up the AlertDialog
+//  AlertDialog alert = AlertDialog(
+////    title: Text("Logout"),
+//    content: Text("Password change successfully"),
+//    actions: [
+////      cancelButton,
+//      continueButton,
+//    ],
+//  );
+
+    // show the dialog
+    showDialog(
+
+        barrierDismissible: false,
+        barrierColor: barrierColor,
+        context: context,
+        builder: (_) => new AlertDialog(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+              borderRadius:
+              BorderRadius.all(
+                  Radius.circular(5.0))),
+          content: Builder(
+            builder: (context) {
+              // Get available height and width of the build area of this widget. Make a choice depending on the size.
+              var height = MediaQuery.of(context).size.height;
+              var width = MediaQuery.of(context).size.width;
+
+              return Container(
+                  height: 20,
+                  width: width ,
+                  child: Text(text,         textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: kPrimaryColor
+                    ),)
+              );
+            },
+          ),
+          actions: [
+            continueButton
+          ],
+        )
+    );
   }
 
 static   modalBottomSheetMenu({BuildContext context, Widget body, }){

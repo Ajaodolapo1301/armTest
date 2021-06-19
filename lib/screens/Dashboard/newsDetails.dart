@@ -1,6 +1,7 @@
 
 
 import 'package:arm_test/model/newsModel.dart';
+import 'package:arm_test/sizeConfig/sizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -43,10 +44,45 @@ class _NewsDetailsState extends State<NewsDetails> {
                     [
                       Container(
                         margin:EdgeInsets.symmetric(vertical: 10, horizontal: 10) ,
-                        child: Text(widget.newsModel.description),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Title", style: TextStyle(
+                                color: Colors.black,
+
+                                fontSize: 1.9 * SizeConfig.textMultiplier),),
+                            SizedBox(height: 10,),
+                            Text(widget.newsModel.title, style: TextStyle(
+                                color: Colors.black,
+
+                                fontSize: 2.0 * SizeConfig.textMultiplier),),
+                          ],
+                        ),
                       ),
 
-                      TextButton(child: Text("click here for more info", style: TextStyle(color: Colors.blue,decoration: TextDecoration.underline )  ))
+                      Container(
+                        margin:EdgeInsets.symmetric(vertical: 10, horizontal: 10) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Description",  style: TextStyle(
+                            color: Colors.black,
+
+                            fontSize: 1.9 * SizeConfig.textMultiplier),
+                        ),
+                            SizedBox(height: 10,),
+                            Text(
+                              widget.newsModel.description, style: TextStyle(
+                                color: Colors.black,
+
+                                fontSize: 2.0 * SizeConfig.textMultiplier),),
+                          ],
+                        ),
+                      ),
+
+                      TextButton(
+                        onPressed: _launchURL,
+                          child: Text("Click here for more info", style: TextStyle(color: Colors.blue,decoration: TextDecoration.underline )  ))
                     ]
               ),
             ),
