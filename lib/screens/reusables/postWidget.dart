@@ -6,11 +6,11 @@ import 'package:arm_test/screens/Dashboard/add.dart';
 import 'package:arm_test/sizeConfig/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 
-Widget postWidget(BuildContext context, {Post news}) {
+Widget postWidget(BuildContext context, {Post post}) {
   return GestureDetector(
     onTap: () {
       pushTo(context, Add(
-        post: news,
+        post: post,
       ));
       // newsModel: news,
       //
@@ -33,14 +33,14 @@ Widget postWidget(BuildContext context, {Post news}) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  news.title,
+                  post.title,
                   // news["title"],
                   // CommonUtils.formatDate(news.publishedAt),
                   style: TextStyle(color: blue, fontSize: 10),
                 ),
                 SizedBox(height: 3),
                 Text(
-                  news.desc,
+                  post.desc,
                   // news["Description"],
                   // overflow: TextOverflow.ellipsis,
                   style: TextStyle(color:blue,
@@ -51,19 +51,18 @@ Widget postWidget(BuildContext context, {Post news}) {
               ],
             ),
           ),
-           Container(
-             height: 40,
-             width: 40,
-             decoration: BoxDecoration(
 
 
-               shape: BoxShape.circle,
-               image: DecorationImage(
-                 fit: BoxFit.cover,
-                 image: NetworkImage(news?.image)
-               )
-             ),
-           )
+          ClipRRect(
+            borderRadius: BorderRadius.circular(360.0),
+            child: Image.network(
+                post.image,
+              fit: BoxFit.cover,
+              height:40,
+              width: 40,
+            ),
+          ),
+
         ],
       ),
     ),

@@ -1,6 +1,3 @@
-
-
-
 import 'package:after_layout/after_layout.dart';
 import 'package:arm_test/Provider/newsProvider.dart';
 import 'package:arm_test/constants/colorConstants.dart';
@@ -22,14 +19,12 @@ import 'package:provider/provider.dart';
 import 'newsDetails.dart';
 
 class PostPage extends StatefulWidget {
-
   GlobalKey<ScaffoldState> scaffoldKey;
   GlobalKey<FormState> formkey;
 
   PostPage({this.scaffoldKey, this.formkey});
   @override
-  _PostPageState createState() =>
-      _PostPageState();
+  _PostPageState createState() => _PostPageState();
 }
 
 class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
@@ -39,104 +34,94 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
   final auth = FirebaseAuth.instance;
   User user;
 
-
   getCurrent() async {
     user = auth.currentUser;
     print(user);
   }
 
-
-
   List<NewsModel> news = [];
-
 
   @override
   void initState() {
-  getCurrent();
+    getCurrent();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     newsState = Provider.of<NewsState>(context);
     return Scaffold(
-        floatingActionButton:
-             FloatingActionButton(
-          onPressed: () {
-            pushTo(context, Add());
-          },
-          // child: Text("+", style: TextStyle(color: Colors.white),),
-          child: Icon(Icons.add),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          pushTo(context, Add());
+        },
+        child: Icon(Icons.add),
+      ),
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child:
-          Column(
+          child: Column(
             children: [
-
               Header(
                 text: "Posts",
-                preferredActionOnBackPressed: (){
+                preferredActionOnBackPressed: () {
                   pop(context);
-
                 },
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Builder(builder: (context) {
-
                   return StreamBuilder(
-                    stream:firestore.collection("messages").snapshots(),
-                    builder: (context, snapshot){
-                      List <Post> postsList = [];
-                      if(snapshot.hasData) {
+                    stream: firestore.collection("messages").snapshots(),
+                    builder: (context, snapshot) {
+                      List<Post> postsList = [];
+                      if (snapshot.hasData) {
                         List messages = snapshot.data.docs;
                         (messages as List).forEach((dat) {
                           print(dat.id);
                           postsList.add(Post(
-
                               id: dat.id,
                               title: dat["title"],
                               sender: dat["sender"],
                               image: dat["images"],
-                              desc: dat["Description"]
-                          ));
+                              desc: dat["Description"]));
                         });
 
-                        return postsList.isEmpty ? Center(
-                          child: Container(
+                        return postsList.isEmpty
+                            ? Container(
+                            // height: MediaQuery.of(context).size.height,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
 
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 5),
-                                Text(
-                                  "No Post yet.",
-                                  style: TextStyle(
-                                      color: kPrimaryLight, fontWeight: FontWeight.bold, fontSize: 17),
-                                ),
-                                Text(
-                                  "Add some posts",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: kPrimaryLight, fontSize: 11),
-                                )
-                              ],
-                            ),
-                          ),
-                        ) : Column(
-                          children: postsList.map((e) {
-                            return postWidget(context, news: e);
-                          }).toList(),
-                        );
-                      }
-                      else if (snapshot.hasError ){
-                        return   Text("An error occured");
+                                  SizedBox(height: MediaQuery.of(context).size.height * 0.3,),
+                                  Text(
+                                    "No Post yet.",
+                                    style: TextStyle(
+                                        color: kPrimaryLight,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  ),
+                                  Text(
+                                    "Add some posts to see posts",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: kPrimaryLight, fontSize: 11),
+                                  )
+                                ],
+                              ),
+                            )
+                            : Column(
+                                children: postsList.map((e) {
+                                  return postWidget(context, post: e);
+                                }).toList(),
+                              );
+                      } else if (snapshot.hasError) {
+                        return Text("An error occured");
                       }
                       return Center(child: CupertinoActivityIndicator());
                     },
                   );
-
-
                 }),
               ),
             ],
@@ -149,18 +134,19 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
   Widget loanItem(BuildContext context, NewsModel news) {
     return GestureDetector(
       onTap: () {
-        pushTo(context, NewsDetails(
-          newsModel: news,
-
-        ));
+        pushTo(
+            context,
+            NewsDetails(
+              newsModel: news,
+            ));
       },
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: kPrimaryLight,
           border: Border.all(
-            // color: borderBlue.withOpacity(0.05),
-          ),
+              // color: borderBlue.withOpacity(0.05),
+              ),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -174,17 +160,15 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
                     style: TextStyle(color: kSurfaceColor, fontSize: 10),
                   ),
                   SizedBox(height: 3),
-                  Text(news.title,
-
-                    style: TextStyle(color:kSurfaceColor,
-
-
+                  Text(
+                    news.title,
+                    style: TextStyle(
+                      color: kSurfaceColor,
                     ),
                   )
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -193,28 +177,25 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
 
   @override
   void afterFirstLayout(BuildContext context) {
-    fetchNew();
+    // fetchNew();
   }
 
-  void fetchNew()async{
-    setState(() {
-      isLoading = true;
-    });
-    var result = await  newsState.getNews();
-    setState(() {
-      isLoading = false;
-    });
-    if(result["error"] == false){
-      setState(() {
-        news = result["newsModel"];
-        print(news);
-      });
-    }else{
-
-      CommonUtils.kShowSnackBar(color: Colors.red, ctx: context, msg: result["message"]);
-    }
-
-  }
-
-
+  // void fetchNew() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   var result = await newsState.getNews();
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  //   if (result["error"] == false) {
+  //     setState(() {
+  //       news = result["newsModel"];
+  //       print(news);
+  //     });
+  //   } else {
+  //     CommonUtils.kShowSnackBar(
+  //         color: Colors.red, ctx: context, msg: result["message"]);
+  //   }
+  // }
 }

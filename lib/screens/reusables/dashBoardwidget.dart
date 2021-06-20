@@ -45,8 +45,8 @@ class _PersonalDashboardViewState extends State<PersonalDashboardView> with Auto
             padding: EdgeInsets.only(bottom: 10, top: 5),
             child: Center(
               child: Text(
-                "Click a button to get to the main view",
-                style: TextStyle(color: Colors.red, fontSize: 12),
+                "Click a Button to Get to a Main View",
+                style: TextStyle(color: blue, fontSize: 12),
               ),
             ),
           ),

@@ -307,7 +307,7 @@ class _AddState extends State<Add> {
             CustomButton(
 
               color: cyan,
-              type: ButtonType.gradient,
+              type: ButtonType.filled,
               textColor: Colors.white,
               text: widget.post != null ? "Edit Post".toUpperCase() :  "Add Post".toUpperCase(),
               onPressed: () async {
