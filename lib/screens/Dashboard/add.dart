@@ -32,7 +32,7 @@ class _AddState extends State<Add> {
   TextEditingController title = TextEditingController();
 
   TextEditingController desc = TextEditingController();
-
+  final formKey = GlobalKey<FormState>();
   File idFile;
   var imageUrl;
 
@@ -105,106 +105,154 @@ class _AddState extends State<Add> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Title",
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(
-                  height: 1.3 * SizeConfig.textMultiplier,
-                ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: title,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Address is required";
-                          }
-
-                          if (value.length < 10) {
-                            return "Enter full address";
-                          }
-
-                          return null;
-                        },
-                        style: TextStyle(color: kPrimaryColor),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(kPaddingM),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: borderBlue.withOpacity(0.35)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              color:  borderBlue.withOpacity(0.35),
-                            ),
-                          ),
-                          hintText: "Title",
-                          hintStyle: TextStyle(
-                            fontSize: 1.8 * SizeConfig.textMultiplier,
-//                        color:  Colors.black.withOpacity(0.5),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          fillColor: lightBlue,
-                          filled: true,
-                        ),
-                      )
-                    ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Title",
+                    style: TextStyle(fontSize: 20),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.8 * SizeConfig.textMultiplier,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Image",
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(
-                  height: 1.3 * SizeConfig.textMultiplier,
-                ),
-                InkWell(
-                  onTap: () async {
-                    print("mama");
-                    idFile = await getFile();
-                    setState(() {
-                      idfileController.text = basename(idFile.path);
-                    });
-                  },
-                  child: Container(
+                  SizedBox(
+                    height: 1.3 * SizeConfig.textMultiplier,
+                  ),
+                  Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFormField(
-
-                          onTap: () async {
-                            print("mama");
-                            idFile = await getFile();
-                            setState(() {
-                              idfileController.text = basename(idFile.path);
-                            });
-                          },
-                          controller: idfileController,
+                          controller: title,
                           validator: (value) {
                             if (value.isEmpty) {
-                              return "image is required";
+                              return "Title is required";
                             }
+                            return null;
+                          },
+                          style: TextStyle(color: kPrimaryColor),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(kPaddingM),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(color: borderBlue.withOpacity(0.35)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color:  borderBlue.withOpacity(0.35),
+                              ),
+                            ),
+                            hintText: "Title",
+                            hintStyle: TextStyle(
+                              fontSize: 1.8 * SizeConfig.textMultiplier,
+//                        color:  Colors.black.withOpacity(0.5),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            fillColor: lightBlue,
+                            filled: true,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 1.8 * SizeConfig.textMultiplier,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Image",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 1.3 * SizeConfig.textMultiplier,
+                  ),
+                  InkWell(
+                    onTap: () async {
 
-                            if (value.length < 10) {
-                              return "Enter full address";
+                      idFile = await getFile();
+                      setState(() {
+                        idfileController.text = basename(idFile.path);
+                      });
+                    },
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+
+                            onTap: () async {
+
+                              idFile = await getFile();
+                              setState(() {
+                                idfileController.text = basename(idFile?.path);
+                              });
+                            },
+                            controller: idfileController,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "image is required";
+                              }
+
+                              return null;
+                            },
+                            style: TextStyle(color: kPrimaryColor),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(kPaddingM),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(color: borderBlue.withOpacity(0.35)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color:  borderBlue.withOpacity(0.35),
+                                ),
+                              ),
+                              hintText: "Image",
+                              hintStyle: TextStyle(
+                                fontSize: 1.8 * SizeConfig.textMultiplier,
+//                        color:  Colors.black.withOpacity(0.5),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              fillColor: lightBlue,
+                              filled: true,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 1.8 * SizeConfig.textMultiplier,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Description",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 1.3 * SizeConfig.textMultiplier,
+                  ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          controller: desc,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Desc is required";
                             }
 
                             return null;
@@ -222,7 +270,8 @@ class _AddState extends State<Add> {
                                 color:  borderBlue.withOpacity(0.35),
                               ),
                             ),
-                            hintText: "Image",
+                            alignLabelWithHint: true,
+                            hintText: "Description",
                             hintStyle: TextStyle(
                               fontSize: 1.8 * SizeConfig.textMultiplier,
 //                        color:  Colors.black.withOpacity(0.5),
@@ -231,93 +280,36 @@ class _AddState extends State<Add> {
                             fillColor: lightBlue,
                             filled: true,
                           ),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          maxLength: 100,
                         )
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.8 * SizeConfig.textMultiplier,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Description",
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(
-                  height: 1.3 * SizeConfig.textMultiplier,
-                ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: desc,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Desc is required";
-                          }
+                ],
+              ),
+              SizedBox(
+                height: 1.8 * SizeConfig.textMultiplier,
+              ),
 
-                          if (value.length < 10) {
-                            return "Enter full address";
-                          }
+              CustomButton(
 
-                          return null;
-                        },
-                        style: TextStyle(color: kPrimaryColor),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(kPaddingM),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: borderBlue.withOpacity(0.35)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              color:  borderBlue.withOpacity(0.35),
-                            ),
-                          ),
-                          alignLabelWithHint: true,
-                          hintText: "Description",
-                          hintStyle: TextStyle(
-                            fontSize: 1.8 * SizeConfig.textMultiplier,
-//                        color:  Colors.black.withOpacity(0.5),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          fillColor: lightBlue,
-                          filled: true,
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        maxLength: 100,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.8 * SizeConfig.textMultiplier,
-            ),
-
-            CustomButton(
-
-              color: cyan,
-              type: ButtonType.filled,
-              textColor: Colors.white,
-              text: widget.post != null ? "Edit Post".toUpperCase() :  "Add Post".toUpperCase(),
-              onPressed: () async {
-               widget.post != null  ?
-      Edit(context) :
-                uploadImage(context);
-              },
-            ),
-          ],
-        ),
+                color: cyan,
+                type: ButtonType.filled,
+                textColor: Colors.white,
+                text: widget.post != null ? "Edit Post".toUpperCase() :  "Add Post".toUpperCase(),
+                onPressed: () async {
+                  if(formKey.currentState.validate()){
+                    widget.post != null  ?
+                    Edit(context) :
+                    uploadImage(context);
+                  }
+                },
+              ),
+            ],
+          ),
+        )
       ),
     );
   }
