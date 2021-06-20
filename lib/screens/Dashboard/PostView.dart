@@ -86,7 +86,7 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
                 child: Builder(builder: (context) {
 
                   return StreamBuilder(
-                    stream:firestore.collection("messages").where("sender" == user.email).snapshots(),
+                    stream:firestore.collection("messages").snapshots(),
                     builder: (context, snapshot){
                       List <Post> postsList = [];
                       if(snapshot.hasData) {
