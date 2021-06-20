@@ -25,7 +25,7 @@ class Database {
       "sender": sender
     };
     FirebaseFirestore.instance.collection("messages")
-        .doc(userUid)
+        .doc()
         .set(data, SetOptions(merge: true)).then((value) {
 
     });
