@@ -5,7 +5,7 @@ import 'package:arm_test/sizeConfig/sizeConfig.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+
 
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -55,9 +55,7 @@ class MyApp extends StatelessWidget {
                       fontFamily: 'BasisGrotesquePro'
                     // primarySwatch: Colors.blue,
                   ),
-                  home:
-
-                  Login()),
+                  home: Login()),
             );
           },
         );

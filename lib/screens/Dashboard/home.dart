@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:arm_test/Services/auth.dart';
 import 'package:arm_test/constants/colorConstants.dart';
 import 'package:arm_test/screens/Dashboard/homeList.dart';
@@ -8,6 +9,7 @@ import 'package:arm_test/sizeConfig/navigation/navigator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'add.dart';
 
@@ -18,20 +20,19 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
+class _HomeState extends State<Home> with TickerProviderStateMixin, AfterLayoutMixin<Home> {
 
 
   final auth = FirebaseAuth.instance;
-  FirebaseUser loggedInUser;
-
+  // FirebaseUser loggedInUser;
+  User user;
   PageController pageController = PageController();
 
   getCurrent() async {
-    final user = await auth.currentUser();
-    if (user != null) {
-      loggedInUser = user;
-    }
-    print(loggedInUser.email);
+
+
+  User user = auth.currentUser;
+    print("hgy$user");
   }
 
   int _currentTabIndex = 0;
@@ -47,8 +48,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
-
     _currentTabIndex = 0;
     getCurrent();
   }
@@ -76,7 +75,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: "Home",
+              label: "Post",
             ),
             BottomNavigationBarItem(
               icon: Transform.translate(
@@ -86,7 +85,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   child: Icon(Icons.send_rounded),
                 ),
               ),
-              label: "Send",
+              label: "News",
             ),
           ],
         ),
@@ -97,20 +96,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             children: <Widget>[
               HomeList(),
               NewsPage(),
-              // Container(),
-              // Container(),
-              // Container(),
+
             ],
           ),
         ),
-        floatingActionButton: currentIndex == 1
-            ? SizedBox()
-            : FloatingActionButton(
-                onPressed: () {
-                  pushTo(context, Add());
-                },
-                // child: Text("+", style: TextStyle(color: Colors.white),),
-                child: Icon(Icons.add),
-              ));
+ );
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) async{
+    SharedPreferences  pref = await SharedPreferences.getInstance();
+
   }
 }

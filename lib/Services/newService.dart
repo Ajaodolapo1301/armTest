@@ -13,16 +13,9 @@ class NewsImpl implements AbstractNews{
   Future<Map<String, dynamic>> getNews() async{
     Map<String, dynamic> result = {};
     final String url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=8e33ee34c7384342975e83dc319e18e8";
-
-
-
-    print(url);
     try {
       var response = await http.get(url).timeout(Duration(seconds: 30));
       int statusCode = response.statusCode;
-
-      // print(statusCode);
-      print(response.body);
 
       if (statusCode != 200 && statusCode != 500) {
         result["message"] = jsonDecode(response.body)["error"];
@@ -45,7 +38,7 @@ class NewsImpl implements AbstractNews{
       // print(error.toString());
       result["message"] = error.toString();
     }
-    print(result);
+
     return result;
   }
 

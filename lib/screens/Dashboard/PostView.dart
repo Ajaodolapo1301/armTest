@@ -12,6 +12,7 @@ import 'package:arm_test/screens/reusables/postWidget.dart';
 import 'package:arm_test/sizeConfig/commonUtils.dart';
 import 'package:arm_test/sizeConfig/header.dart';
 import 'package:arm_test/sizeConfig/navigation/navigator.dart';
+import 'package:arm_test/sizeConfig/sizeConfig.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,9 +35,9 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
   NewsState newsState;
   bool isLoading = false;
-  Firestore firestore = Firestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
-  FirebaseUser loggedInUser;
+  // FirebaseUser loggedInUser;
   List<NewsModel> news = [];
   @override
   Widget build(BuildContext context) {
@@ -67,18 +68,18 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Builder(builder: (context) {
-                  bool isEmpty1 = false;
+
                   return StreamBuilder(
                     stream:firestore.collection("messages").snapshots(),
                     builder: (context, snapshot){
                       List <Post> postsList = [];
                       if(snapshot.hasData) {
-                        List messages = snapshot.data.documents;
+                        List messages = snapshot.data.docs;
                         (messages as List).forEach((dat) {
-                          print(dat.documentID);
+                          print(dat.id);
                           postsList.add(Post(
 
-                              id: dat.documentID,
+                              id: dat.id,
                               title: dat["title"],
                               sender: dat["sender"],
                               image: dat["images"],
@@ -86,7 +87,27 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
                           ));
                         });
 
-                        return Column(
+                        return postsList.isEmpty ? Center(
+                          child: Container(
+
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 5),
+                                Text(
+                                  "No Post yet.",
+                                  style: TextStyle(
+                                      color: kPrimaryLight, fontWeight: FontWeight.bold, fontSize: 17),
+                                ),
+                                Text(
+                                  "Add some posts",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: kPrimaryLight, fontSize: 11),
+                                )
+                              ],
+                            ),
+                          ),
+                        ) : Column(
                           children: postsList.map((e) {
                             return postWidget(context, news: e);
                           }).toList(),
@@ -138,7 +159,7 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
                   ),
                   SizedBox(height: 3),
                   Text(news.title,
-                    // overflow: TextOverflow.ellipsis,
+
                     style: TextStyle(color:kSurfaceColor,
 
 
@@ -147,13 +168,7 @@ class _PostPageState extends State<PostPage> with AfterLayoutMixin<PostPage> {
                 ],
               ),
             ),
-            // Text(
-            //   news.description),
-            // style: TextStyle(color:   creditHistory.status == "pending" || creditHistory.status == "pause" ||   creditHistory.status == "awaiting-user-response" || creditHistory.status == "under-review"   ?  Colors.yellow[900] :
-            // creditHistory.status == "approved" || creditHistory.status == "active" ? Colors.green
-            //     : creditHistory.status == "cancelled" || creditHistory.status == "rejected" || creditHistory.status == "closed" ?Colors.red : Colors.black12
-            //     ,
-            //     fontWeight: FontWeight.bold),
+
           ],
         ),
       ),

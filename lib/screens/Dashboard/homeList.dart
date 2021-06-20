@@ -30,17 +30,20 @@ class HomeList extends StatefulWidget {
 }
 
 class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
-  Firestore firestore = Firestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
-  FirebaseUser loggedInUser;
-  List isEmpty = [
-    "1",
-    "2",
-  ];
+  User user;
+
+
+  getCurrent() async {
+     user = auth.currentUser;
+    print(user);
+  }
+
   AnimationController fadeController;
   @override
   void initState() {
-
+  getCurrent();
     super.initState();
     fadeController =
     AnimationController(vsync: this, duration: Duration(seconds: 2))
@@ -77,7 +80,7 @@ class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
                     ),
                     padding: EdgeInsets.all(10),
                     child: Text(
-                        "th",
+                      "${  user.displayName[0]}${user.displayName[1]}",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
@@ -88,7 +91,7 @@ class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                    "sjnc",
+                    user.displayName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: blue,
@@ -96,7 +99,7 @@ class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
                       ),
                     ),
                     Text(
-                  "hbcdh",
+                  user.email,
                       style: TextStyle(
                         color: blue,
                         fontSize: 12,
@@ -146,7 +149,7 @@ class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "You are safe",
+                          "Your Space",
                           style: TextStyle(color: blue, fontSize: 13),
                         ),
                         Row(
@@ -154,7 +157,7 @@ class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
                           children: [
 
                             Text(
-                                "Bare Your thought",
+                                "Your Thoughts",
                               style: TextStyle(
                                   color: blue,
                                   fontWeight: FontWeight.w800,
@@ -163,29 +166,7 @@ class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
                           ],
                         ),
 
-                        // ledger balance has not been impl, showing available balance for now
-                        // RichText(
-                        //   text: TextSpan(
-                        //     text: "LEDGER BALANCE: ",
-                        //     style: TextStyle(
-                        //       color: blue,
-                        //       fontFamily: 'DMSans',
-                        //       fontSize: 9,
-                        //       fontWeight: FontWeight.bold,
-                        //     ),
-                        //     children: [
-                        //       TextSpan(
-                        //           text: loginState.user.currency ,
-                        //           style: TextStyle(fontWeight: FontWeight.normal)
-                        //       ),
-                        //       TextSpan(
-                        //         text: MyUtils.formatAmount(showBusinessDetails ? businessState.business.available_balance:  loginState.user.availableBalance,),
-                        //         style: TextStyle(
-                        //             color: blue, fontWeight: FontWeight.normal),
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
+
 
                       ],
                     ),

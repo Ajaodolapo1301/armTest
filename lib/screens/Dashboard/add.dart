@@ -26,9 +26,9 @@ class Add extends StatefulWidget {
 
 class _AddState extends State<Add> {
   TextEditingController idfileController = TextEditingController();
-  Firestore firestore = Firestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
-  FirebaseUser loggedInUser;
+  User user;
   TextEditingController title = TextEditingController();
 
   TextEditingController desc = TextEditingController();
@@ -42,37 +42,42 @@ class _AddState extends State<Add> {
         context, "Processing...Please wait!");
   }
 
-
-
-
-
-  getCurrent()async{
-    final user = await auth.currentUser();
-    if(user != null){
-      loggedInUser = user;
-    }
-    print(loggedInUser.email);
-
-      if(widget.post != null){
-    print(widget.post.image);
-        idfileController.text = widget.post.image;
-        title.text = widget.post.title;
-        desc.text = widget.post.desc;
-      }
-
-
-
-
+  getCurrent() async {
+    user = auth.currentUser;
+    print(user);
   }
+
+
+
+  // getCurrent()async{
+  //   final user = await auth.currentUser();
+  //   if(user != null){
+  //     loggedInUser = user;
+  //   }
+  //   print(loggedInUser.email);
+  //
+
+  //
+  //
+  //
+  //
+  // }
 
   @override
   void initState() {
     super.initState();
 
     getCurrent();
+    if(widget.post != null){
+      print(widget.post.image);
+      idfileController.text = widget.post.image;
+      title.text = widget.post.title;
+      desc.text = widget.post.desc;
+    }
   }
   @override
   Widget build(BuildContext context) {
+    getCurrent();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -298,16 +303,17 @@ class _AddState extends State<Add> {
             SizedBox(
               height: 1.8 * SizeConfig.textMultiplier,
             ),
-            // widget.post.sender != loggedInUser?.email ? SizedBox() :
+
             CustomButton(
 
               color: cyan,
-              type: ButtonType.outlined,
+              type: ButtonType.gradient,
               textColor: Colors.white,
               text: widget.post != null ? "Edit Post".toUpperCase() :  "Add Post".toUpperCase(),
               onPressed: () async {
                widget.post != null  ?
-      Edit(context) :  uploadImage(context);
+      Edit(context) :
+                uploadImage(context);
               },
             ),
           ],
@@ -332,14 +338,13 @@ class _AddState extends State<Add> {
 
   Edit(context){
     showLoadingDialog(context);
-    // print(title.text);
-    // print(desc.text);
+
 
     Database.updateItem(
       title: title.text,
         description: desc.text,
         docId: widget.post.id,
-        sender: loggedInUser.email,
+        sender: user.email,
         imageUrl: imageUrl ?? widget.post.image
 
     );
@@ -361,7 +366,7 @@ class _AddState extends State<Add> {
         //Upload to Firebase
         var snapshot = await _firebaseStorage.ref()
             .child('images/imageName')
-            .putFile(idFile).onComplete;
+            .putFile(idFile);
         var downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
           imageUrl = downloadUrl;
@@ -370,18 +375,11 @@ class _AddState extends State<Add> {
         print(imageUrl);
         Database.addItem(
           title: title.text,
-          sender: loggedInUser.email,
+          sender: user.email,
           description: desc.text,
           imageUrl: imageUrl
         );
-      // firestore.collection("messages").add(
-      //     {
-      //   "title" : title.text,
-      //   "Description" : desc.text,
-      //     "images" : imageUrl,
-      //     "sender" : loggedInUser.email
-      // }
-      // );
+
         pop(context);
     CommonUtils.showAlertDialog(context: context, text: "Added succesfully", onClose: (){
 pop(context);

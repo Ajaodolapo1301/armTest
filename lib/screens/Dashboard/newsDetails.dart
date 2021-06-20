@@ -1,5 +1,6 @@
 
 
+import 'package:arm_test/constants/colorConstants.dart';
 import 'package:arm_test/model/newsModel.dart';
 import 'package:arm_test/sizeConfig/sizeConfig.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _NewsDetailsState extends State<NewsDetails> {
               delegate: SliverChildListDelegate(
                     [
                       Container(
-                        margin:EdgeInsets.symmetric(vertical: 10, horizontal: 10) ,
+                        margin:EdgeInsets.symmetric(vertical: 20, horizontal: 10) ,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -66,7 +67,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Description",  style: TextStyle(
-                            color: Colors.black,
+                            color: blue,
 
                             fontSize: 1.9 * SizeConfig.textMultiplier),
                         ),

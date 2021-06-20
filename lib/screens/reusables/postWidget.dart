@@ -55,8 +55,11 @@ Widget postWidget(BuildContext context, {Post news}) {
              height: 40,
              width: 40,
              decoration: BoxDecoration(
+
+
                shape: BoxShape.circle,
                image: DecorationImage(
+                 fit: BoxFit.cover,
                  image: NetworkImage(news?.image)
                )
              ),

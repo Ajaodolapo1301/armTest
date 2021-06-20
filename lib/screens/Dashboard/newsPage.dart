@@ -4,6 +4,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:arm_test/Provider/newsProvider.dart';
 import 'package:arm_test/constants/colorConstants.dart';
 import 'package:arm_test/model/newsModel.dart';
+import 'package:arm_test/screens/reusables/newsWidget.dart';
 import 'package:arm_test/sizeConfig/commonUtils.dart';
 import 'package:arm_test/sizeConfig/header.dart';
 import 'package:arm_test/sizeConfig/navigation/navigator.dart';
@@ -34,96 +35,61 @@ class _NewsPageState extends State<NewsPage> with AfterLayoutMixin<NewsPage> {
     newsState = Provider.of<NewsState>(context);
     return Scaffold(
       body:  SafeArea(
+        bottom: false,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Builder(builder: (context) {
-            bool isEmpty = true;
-            if(isLoading){
-              return Center(child: CupertinoActivityIndicator(),);
-            }
-            else if (newsState?.news?.isEmpty ) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 5),
-                  Text(
-                    "No News yet.",
-                    style: TextStyle(
-                        color: kPrimaryLight, fontWeight: FontWeight.bold, fontSize: 17),
-                  ),
-                  Text(
-                    "Refresh to see news",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: kPrimaryLight, fontSize: 11),
-                  )
-                ],
-              );
-            }
-            return ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                height: 20,
+          child: Column(
+            children: [
+              Header(
+                preferredActionOnBackPressed: (){
+             Navigator.maybePop(context);
+                },
+
+                text: "News",
               ),
-              itemCount: newsState.news.length,
-              itemBuilder: (context, index) {
-                return newsWidget(context, newsState.news[index]);
-              },
-            );
-          }),
-        ),
-      ),
-    );
-  }
+              Builder(builder: (context) {
 
-  Widget newsWidget(BuildContext context, NewsModel news) {
-    return GestureDetector(
-      onTap: () {
-        pushTo(context, NewsDetails(
-        newsModel: news,
-
-        ));
-      },
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: lightBlue,
-          border: Border.all(
-            color: borderBlue.withOpacity(0.05),
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    CommonUtils.formatDate(news.publishedAt),
-                    style: TextStyle(color: blue, fontSize: 10),
-                  ),
-                  SizedBox(height: 3),
-                  Text(news.title,
-                    // overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color:blue,
-
-
+                if(isLoading){
+                  return Center(child: CupertinoActivityIndicator(),);
+                }
+                else if (newsState?.news?.isEmpty ) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 5),
+                      Text(
+                        "No News yet.",
+                        style: TextStyle(
+                            color: kPrimaryLight, fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                      Text(
+                        "Refresh to see news",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: kPrimaryLight, fontSize: 11),
+                      )
+                    ],
+                  );
+                }
+                return Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 20,
                     ),
-                  )
-                ],
-              ),
-            ),
-            // Text(
-            //   news.description),
-              // style: TextStyle(color:   creditHistory.status == "pending" || creditHistory.status == "pause" ||   creditHistory.status == "awaiting-user-response" || creditHistory.status == "under-review"   ?  Colors.yellow[900] :
-              // creditHistory.status == "approved" || creditHistory.status == "active" ? Colors.green
-              //     : creditHistory.status == "cancelled" || creditHistory.status == "rejected" || creditHistory.status == "closed" ?Colors.red : Colors.black12
-              //     ,
-              //     fontWeight: FontWeight.bold),
-          ],
+                    itemCount: newsState.news.length,
+                    itemBuilder: (context, index) {
+                      return newsWidget(context, newsState.news[index]);
+                    },
+                  ),
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
   }
+
+
 
   @override
   void afterFirstLayout(BuildContext context) {

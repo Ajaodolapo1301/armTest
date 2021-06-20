@@ -1,18 +1,20 @@
 
 import 'package:arm_test/Services/auth.dart';
 import 'package:arm_test/constants/colorConstants.dart';
+import 'package:arm_test/screens/Dashboard/home.dart';
 import 'package:arm_test/screens/reusables/customTextField.dart';
 import 'package:arm_test/screens/reusables/custom_button.dart';
 import 'package:arm_test/screens/reusables/whiteBox.dart';
 import 'package:arm_test/sizeConfig/commonUtils.dart';
 import 'package:arm_test/sizeConfig/header.dart';
+import 'package:arm_test/sizeConfig/navigation/navigator.dart';
 import 'package:arm_test/sizeConfig/sizeConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+
 
 import 'package:hive/hive.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -52,7 +54,7 @@ var refcode;
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: kPrimaryColor,
+      backgroundColor: blue,
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: SafeArea(
@@ -177,7 +179,7 @@ var refcode;
                               text: "SIGN UP".toUpperCase(),
                               onPressed: () async{
                                 if (formKey.currentState.validate()) {
-                                    // register(surname, firstname, email, password);
+                                    register(surname, firstname, email, password);
 
                                       }
 
@@ -202,14 +204,25 @@ var refcode;
 
 
   void register(firstname, lastname, email, password)async{
-    var user = await FireAuth
-        .registerUsingEmailPassword(
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      password: password,
-    );
-    print(user);
+    showLoadingDialog(context);
+      try{
+        User user = await FireAuth
+            .registerUsingEmailPassword(
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          password: password,
+        );
+        if(user != null){
+          pushToAndClearStack(context, Home());
+        }else{
+
+          pd.hide();
+          CommonUtils.kShowSnackBar(color: Colors.red, msg: "An Error occurred", ctx: context);
+        }
+      }catch(e){
+
+      }
   }
 }
 

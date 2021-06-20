@@ -66,7 +66,7 @@ class _PersonalDashboardViewState extends State<PersonalDashboardView> with Auto
                   Expanded(
                     child: HomeCard(
                       imagePath: "assets/images/home/fund_transfer.png",
-                      mainText: "Post",
+                      mainText: "Personal\nPost",
                       subText: "Post private thoughts",
                       color: almostRed,
                       onTap: () {
@@ -78,7 +78,7 @@ class _PersonalDashboardViewState extends State<PersonalDashboardView> with Auto
                   Expanded(
                     child: HomeCard(
                       imagePath: "assets/images/home/reserve_fund.png",
-                      mainText: "News",
+                      mainText: "Favorite\nNews",
                       subText: "See whats going on in the world",
                       color: almostCyan,
                       onTap: (){
@@ -97,7 +97,7 @@ class _PersonalDashboardViewState extends State<PersonalDashboardView> with Auto
                   Expanded(
                     child: HomeCard(
                       imagePath: "assets/images/home/airtime_and_bills.png",
-                      mainText: "Announcement",
+                      mainText: "All\nAnnouncement",
                       subText: "Make an announcement",
                       color: almostPurple,
                       onTap: (){
@@ -109,7 +109,7 @@ class _PersonalDashboardViewState extends State<PersonalDashboardView> with Auto
                   Expanded(
                     child: HomeCard(
                       imagePath: "assets/images/home/account_statement.png",
-                      mainText: "Invite",
+                      mainText: "Invite\nSection",
                       subText: "Invite your friends",
                       color: almostGreen,
                       onTap: (){

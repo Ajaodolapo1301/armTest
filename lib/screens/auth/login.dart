@@ -13,7 +13,7 @@ import 'package:arm_test/sizeConfig/sizeConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+
 
 import 'package:hive/hive.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: blue,
-      // kPrimaryColor,
+
 
       body: SafeArea(
         bottom: false,
@@ -129,42 +129,33 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 5.4 * SizeConfig.heightMultiplier,
                   ),
-              CustomButton(
-                textColor: Colors.black,
-                text: "Log In".toUpperCase(),
-                onPressed: () async {
-                  if (formKey.currentState.validate()) {
-                    login( email, password);
-                  }
 
-                },
-              ),
-                  // FutureBuilder(
-                  //   // future: Firebase.initializeApp(),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.hasError) {
-                  //       return Text('Error initializing Firebase');
-                  //     } else if (snapshot.connectionState ==
-                  //       ConnectionState.done) {
-                  //       return CustomButton(
-                  //         textColor: Colors.black,
-                  //         text: "Log In".toUpperCase(),
-                  //         onPressed: () async {
-                  //           // if (formKey.currentState.validate()) {
-                  //           //   login( email, password);
-                  //           // }
-                  //
-                  //           pushTo(context, Home());
-                  //         },
-                  //       );
-                  //     }
-                  //     return CircularProgressIndicator(
-                  //       valueColor: AlwaysStoppedAnimation<Color>(
-                  //         kPrimaryColor,
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                  FutureBuilder(
+                    future: Firebase.initializeApp(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error initializing Firebase');
+                      } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                        return CustomButton(
+                          textColor: Colors.black,
+                          text: "Log In".toUpperCase(),
+                          onPressed: () async {
+                            if (formKey.currentState.validate()) {
+                              login( email, password);
+                            }
+
+
+                          },
+                        );
+                      }
+                      return CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          kPrimaryColor,
+                        ),
+                      );
+                    },
+                  ),
 
                   SizedBox(
                     height: 3.9 * SizeConfig.heightMultiplier,
@@ -193,8 +184,8 @@ class _LoginState extends State<Login> {
 
   void login(email, password)async{
     showLoadingDialog(context);
-    var user = await FireAuth.signInUsingEmailPassword(email: email, password: password,);
-
+    User user = await FireAuth.signInUsingEmailPassword(email: email, password: password,);
+      print(user);
     pd.hide();
       if(user !=  null){
          pushToAndClearStack(context, Home());
