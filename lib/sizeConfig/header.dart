@@ -7,11 +7,13 @@ import 'navigation/navigator.dart';
 
 class Header extends StatelessWidget {
   final String text;
+ final bool register;
   final VoidCallback preferredActionOnBackPressed;
 
   const Header({
     Key key,
     this.text,
+    this.register= false,
     this.preferredActionOnBackPressed,
   }) : super(key: key);
 
@@ -19,7 +21,7 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
+    register ?     Container(
           height: 36,
           // width: 45,
           decoration: BoxDecoration(
@@ -37,7 +39,25 @@ class Header extends StatelessWidget {
                   : pop(context);
             },
           ),
-        ),
+        ) :    IconButton(
+    icon: Icon(
+    Icons.arrow_back_ios_rounded,
+    size: 18,
+    color: blue,
+    ),
+    onPressed: () {
+    // FocusScopeNode currentFocus = FocusScope.of(context);
+    //
+    // if (!currentFocus.hasPrimaryFocus) {
+    //   currentFocus.unfocus();
+    // }
+    preferredActionOnBackPressed != null
+    ? preferredActionOnBackPressed()
+        : pop(context);
+
+
+    },
+    ),
         Spacer(),
         Text(
           text,

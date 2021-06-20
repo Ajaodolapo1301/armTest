@@ -50,7 +50,7 @@ class CommonUtils{
     Widget continueButton = FlatButton(
       child: Text("Yes", style: TextStyle(color: kPrimaryColor),),
       onPressed:  () {
-      auth.signOut();
+      // auth.signOut();
 
         Navigator.pushAndRemoveUntil(
             context,
@@ -144,10 +144,12 @@ class CommonUtils{
     );
   }
 
-static   modalBottomSheetMenu({BuildContext context, Widget body, }){
+  static   modalBottomSheetMenu({BuildContext context, Widget body, }){
     showModalBottomSheet(
+
+        barrierColor: barrierColor,
         shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0)
+            borderRadius: BorderRadius.circular(20.0)
         ),
         context: context,
         builder: (builder){
@@ -157,7 +159,7 @@ static   modalBottomSheetMenu({BuildContext context, Widget body, }){
             //so you don't have to change MaterialApp canvasColor
             child: new Container(
                 decoration: new BoxDecoration(
-                    color:  Colors.white,
+                    color:Colors.white,
                     borderRadius: new BorderRadius.only(
                         topLeft: const Radius.circular(20.0),
                         topRight: const Radius.circular(20.0))),

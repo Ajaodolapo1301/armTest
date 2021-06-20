@@ -18,16 +18,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // final appDocumentDirectory =
-  // await path_provider.getApplicationDocumentsDirectory();
 
-  // Hive.init(appDocumentDirectory.path);
-  //
-  // Hive.registerAdapter(UserAdapter());
-  //
-  // await Hive.openBox("user");
-  // final box = Hive.box("user");
-  // User user = box.get('user', defaultValue: null);
   runApp(DevicePreview(
       enabled: false,
       builder: (context) => MultiProvider(providers: [
@@ -38,8 +29,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // final User user;
-  // MyApp({this.user});
+
   @override
   Widget build(BuildContext context) {
     setStatusBarColor(color: BarColor.black);
@@ -61,12 +51,11 @@ class MyApp extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                   title: 'ARM',
                   theme: ThemeData(
-                      primarySwatch: Colors.deepPurple,
+                      primarySwatch: Colors.blue,
                       fontFamily: 'BasisGrotesquePro'
                     // primarySwatch: Colors.blue,
                   ),
                   home:
-                  // DashboardPage())
 
                   Login()),
             );

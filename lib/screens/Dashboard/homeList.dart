@@ -1,8 +1,10 @@
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:arm_test/constants/colorConstants.dart';
 import 'package:arm_test/model/newsModel.dart';
+import 'package:arm_test/screens/reusables/dashBoardwidget.dart';
 import 'package:arm_test/sizeConfig/commonUtils.dart';
 import 'package:arm_test/sizeConfig/navigation/navigator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,7 +29,7 @@ class HomeList extends StatefulWidget {
   _HomeListState createState() => _HomeListState();
 }
 
-class _HomeListState extends State<HomeList> {
+class _HomeListState extends State<HomeList> with  TickerProviderStateMixin {
   Firestore firestore = Firestore.instance;
   final auth = FirebaseAuth.instance;
   FirebaseUser loggedInUser;
@@ -35,177 +37,188 @@ class _HomeListState extends State<HomeList> {
     "1",
     "2",
   ];
+  AnimationController fadeController;
+  @override
+  void initState() {
 
+    super.initState();
+    fadeController =
+    AnimationController(vsync: this, duration: Duration(seconds: 2))
+      ..forward()
+      ..repeat(reverse: true);
+
+
+    Timer(Duration(milliseconds: 1), () {
+
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: Builder(builder: (context) {
-          bool isEmpty1 = false;
-          if(isEmpty1){
-            return Center(child: CupertinoActivityIndicator(),);
-          }
-          else if (isEmpty.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 5),
-                Text(
-                  "No history yet.",
-                  style: TextStyle(
-                      color: kPrimaryLight, fontWeight: FontWeight.bold, fontSize: 17),
-                ),
-                Text(
-                  "Make transactions to see history",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: kPrimaryLight, fontSize: 11),
-                )
-              ],
-            );
-          }
-          return StreamBuilder(
-            stream:firestore.collection("messages").snapshots(),
-            builder: (context, snapshot){
-              List <Post> posts = [];
-                if(snapshot.hasData){
-
-                  List messages = snapshot.data.documents;
-                  (messages as List).forEach((dat){
-
-                    print(dat.documentID);
-                    posts.add(Post(
-
-                      id: dat.documentID,
-                      title: dat["title"],
-                      sender: dat["sender"],
-                      image: dat["images"],
-                      desc: dat["Description"]
-                    ));
-                  });
-
-                  return Column(
-                    children: posts.map((e) {
-                      return addItem(context, news: e);
-                    }).toList(),
-                  );
-
-                  // for ( var  post in posts) {
-                  //   return  Column(
-                  //     children: posts.,
-                  //   )
-                  // }
-
-
-              // post.forEach((element, index) {
-              //
-              //   return addItem(context, news: post[element])
-              // })
-
-
-
-
-
-
-
-                    // for (var message in messages) {
-                    // final  List<Post> post = [];
-
-             // var post  =   Post.fromJson(message);
-
-    }else if(!snapshot.data ) {
-                  return Text("No post");
-                }
-               else if (snapshot.hasError ){
-               return   Text("An error occured");
-                }
-                return Center(child: CupertinoActivityIndicator());
-            },
-          );
-
-
-        }),
-      ),
-    );
-  }
-
-
-
-
-
-  Widget addItem(BuildContext context, {Post news}) {
-    return GestureDetector(
-      onTap: () {
-        pushTo(context, Add(
-          post: news,
-        ));
-          // newsModel: news,
-        //
-        // ));
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: kSelectedCardBackgroundColor,
-          border: Border.all(
-            // color: borderBlue.withOpacity(0.05),
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    news.title,
-                    // news["title"],
-                    // CommonUtils.formatDate(news.publishedAt),
-                    style: TextStyle(color: kSurfaceColor, fontSize: 10),
+            SizedBox(height: 20),
+            Row(
+
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: cyan.withOpacity(0.35),
+                    shape: BoxShape.circle,
                   ),
-                  SizedBox(height: 3),
-                  Text(
-                    news.desc,
-                    // news["Description"],
-                    // overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color:kSurfaceColor,
+                  padding: EdgeInsets.all(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: cyan,
+                      shape: BoxShape.circle,
+                    ),
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                        "th",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                    "sjnc",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: blue,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                  "hbcdh",
+                      style: TextStyle(
+                        color: blue,
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
+                ),
+                Spacer(),
+                IconButton(
+                    icon: Icon(Icons.logout),
+                    onPressed: () {
+                      CommonUtils.showAlertDialogLog(context);
+                    })
+              ],
+            ),
+            SizedBox(height: 20),
+            Container(
+              width: double.maxFinite,
+              height: 130,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: deepCyan,
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 10,
+                    left: 4,
+                    child: Image.asset(
+                      "assets/images/curve.png",
+                      width: 120,
+                      height: 120,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    right: 20,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: lightDeepCyan),
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "You are safe",
+                          style: TextStyle(color: blue, fontSize: 13),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
 
+                            Text(
+                                "Bare Your thought",
+                              style: TextStyle(
+                                  color: blue,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 26),
+                            ),
+                          ],
+                        ),
 
+                        // ledger balance has not been impl, showing available balance for now
+                        // RichText(
+                        //   text: TextSpan(
+                        //     text: "LEDGER BALANCE: ",
+                        //     style: TextStyle(
+                        //       color: blue,
+                        //       fontFamily: 'DMSans',
+                        //       fontSize: 9,
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //     children: [
+                        //       TextSpan(
+                        //           text: loginState.user.currency ,
+                        //           style: TextStyle(fontWeight: FontWeight.normal)
+                        //       ),
+                        //       TextSpan(
+                        //         text: MyUtils.formatAmount(showBusinessDetails ? businessState.business.available_balance:  loginState.user.availableBalance,),
+                        //         style: TextStyle(
+                        //             color: blue, fontWeight: FontWeight.normal),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+
+                      ],
                     ),
                   )
                 ],
               ),
             ),
-            // Text(
-            //   news.description),
-            // style: TextStyle(color:   creditHistory.status == "pending" || creditHistory.status == "pause" ||   creditHistory.status == "awaiting-user-response" || creditHistory.status == "under-review"   ?  Colors.yellow[900] :
-            // creditHistory.status == "approved" || creditHistory.status == "active" ? Colors.green
-            //     : creditHistory.status == "cancelled" || creditHistory.status == "rejected" || creditHistory.status == "closed" ?Colors.red : Colors.black12
-            //     ,
-            //     fontWeight: FontWeight.bold),
+            SizedBox(height: 20),
+
+            Expanded(
+              child: PersonalDashboardView(
+                fadeController: fadeController,
+
+              ),
+            ),
+
+
+
           ],
         ),
       ),
     );
   }
+
+
+
+
+
+
 }
 
 
-class FileClass {
-  File file;
 
-  @override
-  String toString() {
-    super.toString();
-    return "${file.path}";
-  }
-
-  void changeFile(File newFile) {
-    file = newFile;
-  }
-}
 
 Future<File> getFile({File file}) async {
 
@@ -213,37 +226,14 @@ Future<File> getFile({File file}) async {
   if(result != null) {
     File file = File(result.path);
     int sizeInBytes = file.lengthSync();
-    // if(sizeInBytes < 307200){
-      return file;
-    // }else{
-    //   // toast("Files too large, maximum is 300kb");
-    //
-    // }
 
-  // } else {
-  //   return null;
+      return file;
+
   }
 
 }
 
 
 
-class Post{
-  String id;
-  String title;
-  String desc;
-  String image;
-  String sender;
 
-
-
-  Post({this.sender, this.desc, this.title, this.image, this.id});
-  factory Post.fromJson(Map<String , dynamic> json)=>Post(
-    title: json["title"],
-    desc: json["Description"],
-    image: json["images"],
-    sender: json["sender"],
-      id: json["id"]
-  );
-}
 

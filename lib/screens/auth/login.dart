@@ -45,7 +45,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: kPrimaryColor,
+      backgroundColor: blue,
+      // kPrimaryColor,
 
       body: SafeArea(
         bottom: false,

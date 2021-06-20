@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
       return SizedBox(
         width: double.maxFinite,
         child: OutlineButton(
-
+color: cyan,
           onPressed: onPressed,
           child: Text(
             text,
@@ -37,7 +37,7 @@ class CustomButton extends StatelessWidget {
               fontSize: 16
             ),
           ),
-          // borderSide: BorderSide(color: cyan),
+          borderSide: BorderSide(color: cyan),
           padding: EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6),

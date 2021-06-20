@@ -6,10 +6,20 @@ const double kPaddingM = 16.0;
 Color kPrimaryColor = Color(0xff2E1963);
 Color kPrimaryLight = Color(0xff584783);
 Color pink = Color(0xffE9BBFF);
-
+Color almostRed = Color(0xffFFEAE9);
+Color almostCyan = Color(0xFFF0FAFF);
+Color almostPurple = Color(0xFFEDE4FF);
+Color almostGreen = Color(0xFFE3FFEF);
 
 Color gold = Color(0xffFFC175);
-
+const Color blue = Color(0xff233972);
+const Color headerColor = Color(0xff0D3E53);
+Color orange = Color(0xffFF6F3B);
+const Color lightBlue = Color(0xffF0FAFF);
+Color borderBlue = Color(0xff9AA9CF);
+const  Color cyan = Color(0xff00C2FF);
+Color deepCyan = Color(0xffD9F6FF);
+Color lightDeepCyan = Color(0xff87E3FF);
 
 // const Color kPrimaryColor = Color(0xFF333959);
 const Color kPrimaryColorLight = Color(0xFF5E6386);

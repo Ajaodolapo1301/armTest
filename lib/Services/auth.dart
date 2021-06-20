@@ -12,10 +12,13 @@ class FireAuth {
         email: email,
         password: password,
       );
-      // user = userCredential.user;
-      await user.updateProfile();
-      await user.reload();
-      user = auth.currentUser();
+
+
+
+
+      // await user.updateProfile();
+      // await user.reload();
+      // user = auth.currentUser();
 
     } catch (e) {
       if (e.code == 'weak-password') {

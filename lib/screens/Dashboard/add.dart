@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:arm_test/Services/database.dart';
 import 'package:arm_test/constants/colorConstants.dart';
+import 'package:arm_test/model/postModel.dart';
 import 'package:arm_test/screens/Dashboard/homeList.dart';
 import 'package:arm_test/screens/reusables/custom_button.dart';
 import 'package:arm_test/sizeConfig/commonUtils.dart';
@@ -74,6 +75,7 @@ class _AddState extends State<Add> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         leading: IconButton(
 
           icon: Icon(
@@ -85,9 +87,9 @@ class _AddState extends State<Add> {
           },
         ),
         actions: [
-          IconButton(icon: Icon(Icons.delete), onPressed: (){
+        widget.post != null ? IconButton(icon: Icon(Icons.delete, color: blue,), onPressed: (){
               Delete(context);
-          })
+          }) : SizedBox()
         ],
         title: Text(
           " ${widget.post == null ? "Add Personal Notes " : "Edit Personal Notes"}",
@@ -109,7 +111,7 @@ class _AddState extends State<Add> {
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
-                  height: 1.8 * SizeConfig.textMultiplier,
+                  height: 1.3 * SizeConfig.textMultiplier,
                 ),
                 Container(
                   child: Column(
@@ -133,12 +135,12 @@ class _AddState extends State<Add> {
                           contentPadding: const EdgeInsets.all(kPaddingM),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: kPrimaryColor),
+                            borderSide: BorderSide(color: borderBlue.withOpacity(0.35)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                              color: Colors.black.withOpacity(0.5),
+                              color:  borderBlue.withOpacity(0.35),
                             ),
                           ),
                           hintText: "Title",
@@ -147,7 +149,7 @@ class _AddState extends State<Add> {
 //                        color:  Colors.black.withOpacity(0.5),
                             fontWeight: FontWeight.w500,
                           ),
-                          fillColor: Colors.transparent,
+                          fillColor: lightBlue,
                           filled: true,
                         ),
                       )
@@ -167,7 +169,7 @@ class _AddState extends State<Add> {
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
-                  height: 1.8 * SizeConfig.textMultiplier,
+                  height: 1.3 * SizeConfig.textMultiplier,
                 ),
                 InkWell(
                   onTap: () async {
@@ -207,12 +209,12 @@ class _AddState extends State<Add> {
                             contentPadding: const EdgeInsets.all(kPaddingM),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(color: kPrimaryColor),
+                              borderSide: BorderSide(color: borderBlue.withOpacity(0.35)),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
-                                color: Colors.black.withOpacity(0.5),
+                                color:  borderBlue.withOpacity(0.35),
                               ),
                             ),
                             hintText: "Image",
@@ -221,7 +223,7 @@ class _AddState extends State<Add> {
 //                        color:  Colors.black.withOpacity(0.5),
                               fontWeight: FontWeight.w500,
                             ),
-                            fillColor: Colors.transparent,
+                            fillColor: lightBlue,
                             filled: true,
                           ),
                         )
@@ -242,7 +244,7 @@ class _AddState extends State<Add> {
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
-                  height: 1.8 * SizeConfig.textMultiplier,
+                  height: 1.3 * SizeConfig.textMultiplier,
                 ),
                 Container(
                   child: Column(
@@ -266,12 +268,12 @@ class _AddState extends State<Add> {
                           contentPadding: const EdgeInsets.all(kPaddingM),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: kPrimaryColor),
+                            borderSide: BorderSide(color: borderBlue.withOpacity(0.35)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                              color: Colors.black.withOpacity(0.5),
+                              color:  borderBlue.withOpacity(0.35),
                             ),
                           ),
                           alignLabelWithHint: true,
@@ -281,7 +283,7 @@ class _AddState extends State<Add> {
 //                        color:  Colors.black.withOpacity(0.5),
                             fontWeight: FontWeight.w500,
                           ),
-                          fillColor: Colors.transparent,
+                          fillColor: lightBlue,
                           filled: true,
                         ),
                         keyboardType: TextInputType.multiline,
@@ -298,7 +300,9 @@ class _AddState extends State<Add> {
             ),
             // widget.post.sender != loggedInUser?.email ? SizedBox() :
             CustomButton(
-              type: ButtonType.gradient,
+
+              color: cyan,
+              type: ButtonType.outlined,
               textColor: Colors.white,
               text: widget.post != null ? "Edit Post".toUpperCase() :  "Add Post".toUpperCase(),
               onPressed: () async {
@@ -336,7 +340,7 @@ class _AddState extends State<Add> {
         description: desc.text,
         docId: widget.post.id,
         sender: loggedInUser.email,
-        imageUrl: imageUrl
+        imageUrl: imageUrl ?? widget.post.image
 
     );
     // pop(context);
